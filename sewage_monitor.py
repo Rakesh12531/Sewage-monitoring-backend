@@ -14,6 +14,8 @@ from sklearn.preprocessing import StandardScaler
 import joblib
 import threading
 import time
+import os
+import sys
 
 # ==================== CONFIGURATION ====================
 SUPABASE_URL = "https://ritbhmmrsdfmugfmndth.supabase.co"
@@ -656,11 +658,18 @@ def main():
     print("="*70)
     print("TRAINING OPTIONS:")
     print("="*70)
-    print("1. Train AI Model (requires 50+ sensor readings)")
-    print("2. Just Monitor (collect data and view dashboard)")
-    print("="*70)
     
-    choice = input("\n👉 Select option (1 or 2): ").strip()
+    # If running non-interactively (e.g. Render), default to Monitoring mode (2).
+    # Allow overriding with env var SEWAGE_MODE="1" or "2".
+    if not sys.stdin or not sys.stdin.isatty():
+        print("\n⚠️ Non-interactive environment detected; defaulting to Monitoring mode (2).")
+        choice = os.getenv("SEWAGE_MODE", "2")
+    else:
+        try:
+            choice = input("\n👉 Select option (1 or 2): ").strip()
+        except EOFError:
+            print("\n⚠️ No stdin available (EOF); defaulting to Monitoring mode (2).")
+            choice = os.getenv("SEWAGE_MODE", "2")
     
     if choice == "1":
         print("\n" + "="*70)
