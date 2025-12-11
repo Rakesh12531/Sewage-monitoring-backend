@@ -1,5 +1,11 @@
 pandas
 numpy
 scikit-learn
-paho-mqtt
 joblib
+paho-mqtt
+supabase
+python-dotenv
+requests
+aiohttp
+websockets
+psycopg2-binary
